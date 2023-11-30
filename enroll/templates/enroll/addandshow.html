@@ -1,0 +1,53 @@
+{% extends 'enroll/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-4">  {% comment %} this divides the screen in 3 collums <col-sm-4> collumn-small-4 {% endcomment %}
+        <h4 class = 'text-center alert alert-info'>Add New student</h4> {% comment %} alert -make it box alert-info make it blue in color {% endcomment %}
+        <form action="" method="post" novalidate>
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" class = 'btn btn-success' value="SUBMIT">  {% comment %} btn-success makes button color green {% endcomment %}
+        </form>
+    </div>
+    <div class="col-sm-7 offset-1">
+        <h4 class = 'text-center alert alert-info'>Show Student Information</h4>
+        {% if stu %}
+            <h4>Table Data</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                      <th scope="col">ID</th>
+                      <th scope="col">First</th>
+                      <th scope="col">Email</th>
+                      <th scope="col">Password</th>
+                      <th scope='col'>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for st in stu %}
+                    <tr>
+                      <th scope="row">{{st.id}}</th>
+                      <td>{{st.name}}</td>
+                      <td>{{st.email}}</td>
+                      <td>{{st.password}}</td>
+                      <td>
+                        <a href="{% url 'updatedata' st.id %}" class='btn btn-warning'>Edit</a>
+                        {% comment %} <a href="#" class='btn btn-outline-danger'>Delete</a> {% endcomment %}
+                        <form action="{% url 'deletedata' st.id %}" method="post" class = 'd-inline'>
+                            {% csrf_token %}
+                            <input type="submit" class='btn btn-danger' value="Delete">
+                        </form>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </table>
+        {% else %}
+            <h4 class='text-center alert alert-warning'>NO RECORD</h4>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock content %}
